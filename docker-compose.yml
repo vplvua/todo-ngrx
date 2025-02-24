@@ -1,13 +1,19 @@
-version: '3.8'
-
 services:
   todo-app:
+    container_name: todo-ngrx-container
     build: .
     ports:
-      - "4200:4200"
+      - "1234:4200"
     volumes:
       - ./:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
     command: npm start -- --host 0.0.0.0 --poll=2000
+    networks:
+      - todo-ngrx-network
+
+networks:
+  todo-ngrx-network:
+    name: todo-ngrx-network
+    driver: bridge

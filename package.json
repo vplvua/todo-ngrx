@@ -11,7 +11,7 @@
     "docker:build": "docker compose build",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down",
-    "docker:dev": "docker compose up --build"
+    "docker:dev": "docker compose -p todo-ngrx up --build"  
   },
   "private": true,
   "dependencies": {
