@@ -8,14 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+EXPOSE 4200
 
-FROM nginx:alpine
-
-COPY --from=builder /app/dist/todo-app/browser /usr/share/nginx/html
-
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["npm", "start", "--", "--host", "0.0.0.0", "--poll=2000"]

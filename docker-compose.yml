@@ -4,8 +4,10 @@ services:
   todo-app:
     build: .
     ports:
-      - "4200:80"
+      - "4200:4200"
     volumes:
-      - ./src:/app/src
+      - ./:/app
+      - /app/node_modules
     environment:
       - NODE_ENV=development
+    command: npm start -- --host 0.0.0.0 --poll=2000
