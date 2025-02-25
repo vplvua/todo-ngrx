@@ -1,1 +1,33 @@
-<p>todo-list works!</p>
+<div class="todo-app">
+    <h1>To-do list</h1>
+    
+    <app-todo-form (addTodo)="onAddTodo($event)"></app-todo-form>
+    
+    <app-todo-filter 
+      [currentFilter]="(filter$ | async)!" 
+      (filterChange)="onFilterChange($event)">
+    </app-todo-filter>
+    
+    <div class="loading-error">
+      <div *ngIf="loading$ | async" class="loading">Loading...</div>
+      <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
+    </div>
+    
+    <div class="todo-list">
+      <ng-container *ngIf="(todos$ | async)?.length; else emptyList">
+        <app-todo-item 
+          *ngFor="let todo of (todos$ | async)" 
+          [todo]="todo"
+          (toggleCompleted)="onToggleTodo($event)"
+          (deleteTodo)="onDeleteTodo($event)"
+          (editTodo)="onEditTodo($event)"
+        ></app-todo-item>
+      </ng-container>
+      
+      <ng-template #emptyList>
+        <div class="empty-list" *ngIf="!(loading$ | async)">
+          No to-dos found. Add a new one!
+        </div>
+      </ng-template>
+    </div>
+  </div>

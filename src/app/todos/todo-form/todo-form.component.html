@@ -1,1 +1,17 @@
-<p>todo-form works!</p>
+<form (ngSubmit)="onSubmit()" class="todo-form">
+    <input 
+      type="text" 
+      [(ngModel)]="newTodoTitle" 
+      name="newTodoTitle"
+      placeholder="What you need to do?"
+      class="todo-input"
+      autocomplete="off"
+    >
+    <button 
+      type="submit" 
+      class="add-button"
+      [disabled]="!newTodoTitle.trim()"
+    >
+      ADD
+    </button>
+  </form>

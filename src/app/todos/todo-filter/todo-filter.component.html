@@ -1,0 +1,20 @@
+<div class="filter-container">
+    <button 
+      [class.active]="currentFilter === TodoFilter.ALL"
+      (click)="setFilter(TodoFilter.ALL)"
+    >
+      ALL
+    </button>
+    <button 
+      [class.active]="currentFilter === TodoFilter.ACTIVE"
+      (click)="setFilter(TodoFilter.ACTIVE)"
+    >
+      ACTIVE
+    </button>
+    <button 
+      [class.active]="currentFilter === TodoFilter.COMPLETED"
+      (click)="setFilter(TodoFilter.COMPLETED)"
+    >
+      COMPLETED
+    </button>
+  </div>
