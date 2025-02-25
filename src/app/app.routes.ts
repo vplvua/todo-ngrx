@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 
-import { TodoListComponent } from './todos/todo-list/todo-list.component';
-
 export const routes: Routes = [
-    { path: '', component: TodoListComponent },
+    {
+        path: '',
+        loadChildren: () => import('./todos/todo.routes').then(m => m.todoRoutes)
+    },
     { path: '**', redirectTo: '' }
 ];
