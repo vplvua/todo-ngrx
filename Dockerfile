@@ -8,6 +8,10 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 4200
+COPY start-app.sh /start-app.sh
+RUN chmod +x /start-app.sh
 
-CMD ["npm", "start", "--", "--host", "0.0.0.0", "--poll=2000"]
+EXPOSE 4200 3000
+
+# Use our custom entrypoint script
+ENTRYPOINT ["/start-app.sh"]

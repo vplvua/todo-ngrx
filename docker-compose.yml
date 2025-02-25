@@ -4,6 +4,7 @@ services:
     build: .
     ports:
       - "1234:4200"
+      - "3000:3000"
     volumes:
       - ./:/app
       - /app/node_modules
