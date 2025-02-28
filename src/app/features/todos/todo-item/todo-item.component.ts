@@ -4,18 +4,23 @@ import { FormsModule } from '@angular/forms';
 
 import { Todo } from '../todo.model';
 
+//Prime NG Components
+import { ButtonModule } from 'primeng/button';
+import { PrimeIcons } from 'primeng/api';
+
 @Component({
   selector: 'app-todo-item',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ButtonModule],
   templateUrl: './todo-item.component.html',
-  styleUrl: './todo-item.component.scss'
+  styleUrl: './todo-item.component.scss',
 })
 export class TodoItemComponent {
   @Input() todo!: Todo;
   @Output() toggleCompleted = new EventEmitter<number>();
   @Output() deleteTodo = new EventEmitter<number>();
   @Output() editTodo = new EventEmitter<Todo>();
+  primeIcons = PrimeIcons;
 
   isEditing = false;
   editedTitle = '';
@@ -33,7 +38,7 @@ export class TodoItemComponent {
     if (this.editedTitle.trim()) {
       this.editTodo.emit({
         ...this.todo,
-        title: this.editedTitle.trim()
+        title: this.editedTitle.trim(),
       });
       this.isEditing = false;
     }

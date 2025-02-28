@@ -58,13 +58,6 @@
       "createdAt": "2025-02-25T14:51:22.873Z"
     },
     {
-      "id": "44c4",
-      "title": "another one",
-      "completed": true,
-      "createdAt": "2025-02-25T14:57:17.027Z",
-      "updatedAt": "2025-02-25T16:42:52.307Z"
-    },
-    {
       "id": "04cc",
       "title": "new one",
       "completed": false,

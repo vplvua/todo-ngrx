@@ -7,14 +7,25 @@ import { TodoFormComponent } from '../todo-form/todo-form.component';
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 import { Todo, TodoFilter } from '../todo.model';
-import * as TodoActions from '../state/todo.actions';
-import * as TodoSelectors from '../state/todo.selectors';
+import * as TodoActions from '../store/todo.actions';
+import * as TodoSelectors from '../store/todo.selectors';
+
+// Prime NG Components
+import { ButtonModule } from 'primeng/button';
+
 @Component({
   selector: 'app-todo-list',
   standalone: true,
-  imports: [CommonModule, TodoItemComponent, TodoFilterComponent, TodoFormComponent],
+  imports: [
+    CommonModule,
+    TodoItemComponent,
+    TodoFilterComponent,
+    TodoFormComponent,
+    // Prime NG imports
+    ButtonModule,
+  ],
   templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss'
+  styleUrl: './todo-list.component.scss',
 })
 export class TodoListComponent {
   todos$: Observable<Todo[]>;
@@ -54,5 +65,4 @@ export class TodoListComponent {
   onFilterChange(filter: TodoFilter): void {
     this.store.dispatch(TodoActions.setTodoFilter({ filter }));
   }
-
 }

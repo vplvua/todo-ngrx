@@ -1,0 +1,33 @@
+<div class="layout-wrapper">
+  <header>
+    <p-menubar [model]="items"></p-menubar>
+    <!-- <nav class="navbar">
+      <div class="container">
+        <div class="logo">
+          <span class="app-title">Todo App</span>
+        </div>
+        <ul class="nav-menu">
+          <li *ngFor="let item of items">
+            <a [routerLink]="item.routerLink" routerLinkActive="active">
+              <i class="icon-{{ item.icon }}"></i>
+              {{ item.label }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div *ngIf="isLoading$ | async" class="loading-bar"></div> -->
+  </header>
+
+  <div class="layout-main-container">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Todo App</p>
+    </div>
+  </footer>
+</div>
