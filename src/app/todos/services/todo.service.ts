@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, switchMap } from 'rxjs';
 
 import { Todo } from '../todo.model';
-import { environment } from '../../../environment/environment';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class TodoService {
   constructor(private http: HttpClient) { }
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.apiUrl);
+    return this.http.get<Todo[]>(this.apiUrl+'/todos');
   }
 
   addTodo(title: string): Observable<Todo> {
@@ -24,7 +24,7 @@ export class TodoService {
       createdAt: new Date()
     };
     
-    return this.http.post<Todo>(this.apiUrl, todo);
+    return this.http.post<Todo>(this.apiUrl + '/todos', todo);
   }
 
   updateTodo(todo: Todo): Observable<Todo> {
@@ -33,7 +33,7 @@ export class TodoService {
       updatedAt: new Date() 
     };
     
-    return this.http.put<Todo>(`${this.apiUrl}/${todo.id}`, updatedTodo);
+    return this.http.put<Todo>(`${this.apiUrl}/todos/${todo.id}`, updatedTodo);
   }
 
   toggleTodo(id: number): Observable<Todo> {
@@ -46,12 +46,12 @@ export class TodoService {
             updatedAt: new Date() 
           };
           
-          return this.http.put<Todo>(`${this.apiUrl}/${id}`, updatedTodo);
+          return this.http.put<Todo>(`${this.apiUrl}/todos/${id}`, updatedTodo);
         })
       );
   }
 
   deleteTodo(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/todos/${id}`);
   }
 }
