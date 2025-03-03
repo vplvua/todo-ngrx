@@ -36,8 +36,8 @@ export class TodoService {
     return this.http.put<Todo>(`${this.apiUrl}/todos/${todo.id}`, updatedTodo);
   }
 
-  toggleTodo(id: number): Observable<Todo> {
-    return this.http.get<Todo>(`${this.apiUrl}/${id}`).pipe(
+  toggleTodo(id: string): Observable<Todo> {
+    return this.http.get<Todo>(`${this.apiUrl}/todos/${id}`).pipe(
       switchMap((todo) => {
         const updatedTodo = {
           ...todo,
@@ -50,7 +50,7 @@ export class TodoService {
     );
   }
 
-  deleteTodo(id: number): Observable<void> {
+  deleteTodo(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/todos/${id}`);
   }
 }

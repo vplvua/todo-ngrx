@@ -4,6 +4,7 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 import { routes } from './app.routes';
 import { loadingReducer } from './store/loading/loading.reducer';
@@ -18,5 +19,6 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEffects([]),
     provideStoreDevtools(),
+    provideAnimations(),
   ],
 };

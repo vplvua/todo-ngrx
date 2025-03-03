@@ -44,17 +44,17 @@ export const updateTodoFailure = createAction(
 // Toggle Todo
 export const toggleTodoCompleted = createAction(
   '[Todo] Toggle Todo Completed',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 
 // Delete Todo
 export const deleteTodo = createAction(
   '[Todo] Delete Todo',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 export const deleteTodoSuccess = createAction(
   '[Todo] Delete Todo Success',
-  props<{ id: number }>()
+  props<{ id: string }>()
 );
 export const deleteTodoFailure = createAction(
   '[Todo] Delete Todo Failure',
@@ -64,7 +64,7 @@ export const deleteTodoFailure = createAction(
 // Set Selected Todo
 export const setSelectedTodo = createAction(
   '[Todo] Set Selected Todo',
-  props<{ id: number | null }>()
+  props<{ id: string | null }>()
 );
 
 // Filter Todos

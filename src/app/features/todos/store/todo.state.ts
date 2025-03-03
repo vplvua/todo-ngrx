@@ -3,7 +3,7 @@ import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Todo, TodoFilter } from '../todo.model';
 
 export interface TodoState extends EntityState<Todo> {
-  selectedTodoId: number | null;
+  selectedTodoId: string | null;
   filter: TodoFilter;
   loading: boolean;
   error: string | null;

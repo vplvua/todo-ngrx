@@ -33,6 +33,13 @@ export const routes: Routes = [
               ),
           },
           {
+            path: 'new',
+            loadComponent: () =>
+              import('./features/todos/todo-detail/todo-detail.component').then(
+                (c) => c.TodoDetailComponent
+              ),
+          },
+          {
             path: ':id',
             loadComponent: () =>
               import('./features/todos/todo-detail/todo-detail.component').then(
