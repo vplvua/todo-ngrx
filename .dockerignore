@@ -1,0 +1,25 @@
+# Node
+node_modules
+npm-debug.log
+package-lock.json
+
+# Angular specific
+dist
+.angular
+/coverage
+
+# Docker
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+
+# System files
+.DS_Store
+Thumbs.db

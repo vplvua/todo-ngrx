@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
-import { TodoFormComponent } from '../todo-form/todo-form.component';
 import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 import { Todo, TodoFilter } from '../todo.model';
 import * as TodoActions from '../store/todo.actions';
@@ -43,9 +42,9 @@ export class TodoListComponent {
   primeIcons = PrimeIcons;
 
   constructor(
-    private store: Store, 
+    private store: Store,
     private router: Router,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {
     this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos);
     this.filter$ = this.store.select(TodoSelectors.selectTodoFilter);
@@ -67,42 +66,30 @@ export class TodoListComponent {
     }
   }
 
-  // onAddTodo(title: string): void {
-  //   if (title.trim()) {
-  //     this.store.dispatch(TodoActions.addTodo({ title }));
-  //   }
-  // }
-
   onToggleTodo(id: string): void {
     this.store.dispatch(TodoActions.toggleTodoCompleted({ id }));
   }
 
   confirmDelete(todo: Todo): void {
-    console.log('confirmDelete');
-
     this.confirmationService.confirm({
       header: 'Delete Confirmation',
       message: `Are you sure you want to delete <br><b>"${todo.title}"</b>?`,
       icon: this.primeIcons.EXCLAMATION_TRIANGLE,
-      acceptButtonStyleClass:"p-button-danger p-button-text",
-      rejectButtonStyleClass:"p-button-text",
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text',
       acceptLabel: 'Delete',
       rejectLabel: 'Cancel',
       acceptIcon: 'none',
       rejectIcon: 'none',
       accept: () => {
         this.onDeleteTodo(todo.id);
-      }
+      },
     });
   }
 
   onDeleteTodo(id: string): void {
     this.store.dispatch(TodoActions.deleteTodo({ id }));
   }
-
-  // onEditTodo(todo: Todo): void {
-  //   this.store.dispatch(TodoActions.updateTodo({ todo }));
-  // }
 
   onFilterChange(filter: TodoFilter): void {
     this.store.dispatch(TodoActions.setTodoFilter({ filter }));

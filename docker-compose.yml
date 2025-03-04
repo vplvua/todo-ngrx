@@ -3,14 +3,13 @@ services:
     container_name: todo-ngrx-container
     build: .
     ports:
-      - "1234:4200"
-      - "3000:3000"
+      - '1234:4200'
+      - '3000:3000'
     volumes:
       - ./:/app
       - /app/node_modules
     environment:
       - NODE_ENV=development
-    command: npm start -- --host 0.0.0.0 --poll=2000
     networks:
       - todo-ngrx-network
 
