@@ -1,73 +1,73 @@
 <div class="todo-detail-container">
-    <div class="card-header">
-      <h2>{{ isNewTodo ? 'Create New Task' : 'Task Details' }}</h2>
-      <button 
-        pButton 
-        icon="pi pi-arrow-left" 
-        label="Back" 
-        class="p-button-text" 
-        (click)="navigateBack()">
-      </button>
-    </div>
-    
-    <p-card>
-        <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
-          <div class="field">
-            <label for="title">Title</label>
-            <input 
-              id="title" 
-              type="text" 
-              pInputText 
-              formControlName="title" 
-              class="w-full"
-              placeholder="What you need to do?"
-            />
-            <small 
-              *ngIf="todoForm.controls['title'].invalid && todoForm.controls['title'].touched" 
-              class="p-error">
-              Title is required
-            </small>
-          </div>
-          
-          <div class="field">
-            <label for="description">Description</label>
-            <textarea 
-              id="description" 
-              pInputTextarea 
-              formControlName="description" 
-              rows="5" 
-              class="w-full"
-              placeholder="Add some details about this task...">
-            </textarea>
-          </div>
-          
-          <div class="field-checkbox">
-            <p-checkbox 
-                formControlName="completed" 
-                [binary]="true" 
-                inputId="completed">
-            </p-checkbox>
-            <label for="completed">Mark as completed</label>
-          </div>
-          
-          <div class="action-buttons">
-            <p-button 
-                [icon]="primeIcons.CHECK"
-                type="submit" 
-                [label]="isNewTodo ? 'Create Task' : 'Update Task'" 
-                class="p-button-success"
-                [disabled]="todoForm.invalid">
-            </p-button>
-            
-            <p-button 
-              *ngIf="!isNewTodo" 
-              type="button" 
-              label="Delete Task" 
-              icon="pi pi-trash" 
-              class="p-button-danger"
-              (click)="confirmDelete()">
-            </p-button>
-          </div>
-        </form>
-    </p-card>
+  <div class="card-header">
+    <h2>{{ isNewTodo ? 'Create New Task' : 'Task Details' }}</h2>
+    <p-button
+      [icon]="primeIcons.ARROW_LEFT"
+      [text]="true"
+      label="Back"
+      severity="success"
+      (click)="navigateBack()"
+    ></p-button>
   </div>
+
+  <p-card>
+    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+      <div class="field">
+        <label for="title">Title</label>
+        <input
+          id="title"
+          type="text"
+          pInputText
+          formControlName="title"
+          class="w-full"
+          placeholder="What you need to do?"
+        />
+        @if (todoForm.controls['title'].invalid && todoForm.controls['title'].touched) {
+          <small class="p-error"> Title is required </small>
+        }
+      </div>
+
+      <div class="field-checkbox">
+        <p-checkbox formControlName="completed" [binary]="true" inputId="completed"> </p-checkbox>
+        <label for="completed">Mark as completed</label>
+      </div>
+
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          pInputTextarea
+          formControlName="description"
+          rows="5"
+          class="w-full"
+          placeholder="Add some details about this task..."
+        >
+        </textarea>
+      </div>
+
+      <div class="action-buttons">
+        <p-button
+          [icon]="primeIcons.CHECK"
+          type="submit"
+          [label]="isNewTodo ? 'Create Task' : 'Update Task'"
+          severity="success"
+          [disabled]="todoForm.invalid"
+        >
+        </p-button>
+
+        @if (!isNewTodo) {
+          <p-button
+            type="button"
+            label="Delete Task"
+            [icon]="primeIcons.TRASH"
+            severity="danger"
+            (click)="confirmDelete()"
+          >
+          </p-button>
+        }
+      </div>
+    </form>
+  </p-card>
+
+  <p-confirmDialog />
+</div>

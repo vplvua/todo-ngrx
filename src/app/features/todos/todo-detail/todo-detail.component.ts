@@ -33,8 +33,8 @@ import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
     InputTextareaModule,
     CheckboxModule,
     MessageModule,
-    ConfirmDialogModule
-  ],  
+    ConfirmDialogModule,
+  ],
   providers: [ConfirmationService],
   templateUrl: './todo-detail.component.html',
   styleUrl: './todo-detail.component.scss',
@@ -42,7 +42,7 @@ import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
 export class TodoDetailComponent {
   todoForm: FormGroup;
   todoId: string | null = null;
-  isNewTodo = false;
+  isNewTodo = true;
   todo$: Observable<Todo | null | undefined>;
   private destroy$ = new Subject<void>();
   primeIcons = PrimeIcons;
@@ -52,99 +52,115 @@ export class TodoDetailComponent {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
   ) {
     this.todo$ = this.store.select(TodoSelectors.selectSelectedTodo);
 
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
-      completed: [false]
+      completed: [false],
     });
   }
 
   ngOnInit(): void {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.destroy$)
-      ).subscribe(params => {
-        const id = params.get('id');
+    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
+      const id = params.get('id');
 
-        console.log('id', id);
-        
-        if (id === 'new') {
-          this.isNewTodo = true;
-          this.todoId = null;
+      if (id === 'new') {
+        this.isNewTodo = true;
+        this.todoId = null;
 
-          this.store.dispatch(TodoActions.setSelectedTodo({ id: null }));
-        } else if (id) {
-          this.isNewTodo = false;
+        this.store.dispatch(TodoActions.setSelectedTodo({ id: null }));
+      } else if (id) {
+        this.isNewTodo = false;
+        this.todoId = id;
 
-          this.store.dispatch(TodoActions.setSelectedTodo({ id: id }));
-          
-          this.todo$.pipe(
-            filter(todo => !!todo),
+        this.store.dispatch(TodoActions.setSelectedTodo({ id: id }));
+
+        this.todo$
+          .pipe(
+            filter((todo) => !!todo),
             take(1),
-            takeUntil(this.destroy$)
-          ).subscribe((todo: Todo | null | undefined) => {
+            takeUntil(this.destroy$),
+          )
+          .subscribe((todo: Todo | null | undefined) => {
             if (todo) {
               this.todoForm.patchValue({
                 title: todo.title,
                 description: todo.description,
-                completed: todo.completed
+                completed: todo.completed,
               });
             }
           });
-        }
-      });
+      }
+    });
   }
 
   onSubmit(): void {
     if (this.todoForm.invalid) return;
-    
+
     const formValues = this.todoForm.value;
-    
+
     if (this.isNewTodo) {
       this.store.dispatch(TodoActions.addTodo({ title: formValues.title }));
       this.navigateBack();
     } else if (this.todoId) {
-      this.todo$.pipe(
-        filter(todo => !!todo),
-        take(1)
-      ).subscribe((existingTodo: Todo | null | undefined) => {
-        if (existingTodo) {
-          const updatedTodo: Todo = {
-            ...existingTodo,
-            title: formValues.title,
-            description: formValues.description,
-            completed: formValues.completed,
-            updatedAt: new Date()
-          };
-          
-          this.store.dispatch(TodoActions.updateTodo({ todo: updatedTodo }));
-          this.navigateBack();
-        }
-      });
+      this.todo$
+        .pipe(
+          filter((todo) => !!todo),
+          take(1),
+        )
+        .subscribe((existingTodo: Todo | null | undefined) => {
+          if (existingTodo) {
+            const updatedTodo: Todo = {
+              ...existingTodo,
+              title: formValues.title,
+              description: formValues.description,
+              completed: formValues.completed,
+              updatedAt: new Date(),
+            };
+
+            this.store.dispatch(TodoActions.updateTodo({ todo: updatedTodo }));
+            this.navigateBack();
+          }
+        });
     }
   }
 
   navigateBack(): void {
+    this.store.dispatch(TodoActions.clearSelectedTodo());
     this.router.navigate(['/todos']);
   }
 
   confirmDelete(): void {
+    if (this.isNewTodo || !this.todoId) {
+      return;
+    }
+
+    console.log('confirmDelete');
+
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete this task?',
+      header: 'Delete Confirmation',
+      message: `Are you sure you want to delete this task?`,
+      icon: this.primeIcons.EXCLAMATION_TRIANGLE,
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text',
+      acceptLabel: 'Delete',
+      rejectLabel: 'Cancel',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
       accept: () => {
         if (this.todoId) {
           this.store.dispatch(TodoActions.deleteTodo({ id: this.todoId }));
           this.navigateBack();
         }
-      }
+      },
     });
   }
 
   ngOnDestroy(): void {
+    this.store.dispatch(TodoActions.clearSelectedTodo());
     this.destroy$.next();
     this.destroy$.complete();
   }
