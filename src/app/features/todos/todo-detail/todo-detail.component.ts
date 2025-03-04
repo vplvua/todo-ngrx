@@ -17,7 +17,7 @@ import { MessageModule } from 'primeng/message';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { filter, Observable, Subject, take, takeUntil } from 'rxjs';
+import { filter, Observable, of, Subject, switchMap, take, takeUntil, EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-todo-detail',
@@ -43,7 +43,8 @@ export class TodoDetailComponent {
   todoForm: FormGroup;
   todoId: string | null = null;
   isNewTodo = true;
-  todo$: Observable<Todo | null | undefined>;
+  selectedTodo: Todo | null = null;
+  // todo$: Observable<Todo | null | undefined>;
   private destroy$ = new Subject<void>();
   primeIcons = PrimeIcons;
 
@@ -54,8 +55,6 @@ export class TodoDetailComponent {
     private store: Store,
     private confirmationService: ConfirmationService,
   ) {
-    this.todo$ = this.store.select(TodoSelectors.selectSelectedTodo);
-
     this.todoForm = this.fb.group({
       title: ['', Validators.required],
       description: [''],
@@ -64,37 +63,43 @@ export class TodoDetailComponent {
   }
 
   ngOnInit(): void {
-    this.route.paramMap.pipe(takeUntil(this.destroy$)).subscribe((params) => {
-      const id = params.get('id');
+    this.route.paramMap
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap((params) => {
+          const id = params.get('id');
 
-      if (id === 'new') {
-        this.isNewTodo = true;
-        this.todoId = null;
+          if (id === 'new') {
+            this.isNewTodo = true;
+            this.todoId = null;
 
-        this.store.dispatch(TodoActions.setSelectedTodo({ id: null }));
-      } else if (id) {
-        this.isNewTodo = false;
-        this.todoId = id;
+            this.store.dispatch(TodoActions.setSelectedTodo({ id: null }));
 
-        this.store.dispatch(TodoActions.setSelectedTodo({ id: id }));
+            return of(null);
+          } else if (id) {
+            this.isNewTodo = false;
+            this.todoId = id;
 
-        this.todo$
-          .pipe(
-            filter((todo) => !!todo),
-            take(1),
-            takeUntil(this.destroy$),
-          )
-          .subscribe((todo: Todo | null | undefined) => {
-            if (todo) {
-              this.todoForm.patchValue({
-                title: todo.title,
-                description: todo.description,
-                completed: todo.completed,
-              });
-            }
+            this.store.dispatch(TodoActions.setSelectedTodo({ id: id }));
+
+            return this.store
+              .select(TodoSelectors.selectSelectedTodo)
+              .pipe(filter((todo): todo is Todo => !!todo));
+          }
+          return EMPTY;
+        }),
+      )
+      .subscribe((todo) => {
+        if (todo) {
+          this.selectedTodo = todo as Todo;
+
+          this.todoForm.patchValue({
+            title: todo.title,
+            description: todo.description,
+            completed: todo.completed,
           });
-      }
-    });
+        }
+      });
   }
 
   onSubmit(): void {
@@ -103,28 +108,19 @@ export class TodoDetailComponent {
     const formValues = this.todoForm.value;
 
     if (this.isNewTodo) {
-      this.store.dispatch(TodoActions.addTodo({ title: formValues.title }));
+      this.store.dispatch(TodoActions.addTodo({ title: formValues.title || '' }));
       this.navigateBack();
-    } else if (this.todoId) {
-      this.todo$
-        .pipe(
-          filter((todo) => !!todo),
-          take(1),
-        )
-        .subscribe((existingTodo: Todo | null | undefined) => {
-          if (existingTodo) {
-            const updatedTodo: Todo = {
-              ...existingTodo,
-              title: formValues.title,
-              description: formValues.description,
-              completed: formValues.completed,
-              updatedAt: new Date(),
-            };
+    } else if (this.todoId && this.selectedTodo) {
+      const updatedTodo: Todo = {
+        ...this.selectedTodo,
+        title: formValues.title || '',
+        description: formValues.description || '',
+        completed: !!formValues.completed,
+        updatedAt: new Date(),
+      };
 
-            this.store.dispatch(TodoActions.updateTodo({ todo: updatedTodo }));
-            this.navigateBack();
-          }
-        });
+      this.store.dispatch(TodoActions.updateTodo({ todo: updatedTodo }));
+      this.navigateBack();
     }
   }
 

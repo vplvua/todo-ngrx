@@ -1,6 +1,7 @@
 <div class="todo-detail-container">
-  <div class="card-header">
-    <h2>{{ isNewTodo ? 'Create New Task' : 'Task Details' }}</h2>
+  <h2>{{ isNewTodo ? 'Create New Task' : 'Task Details' }}</h2>
+
+  <div class="control-section">
     <p-button
       [icon]="primeIcons.ARROW_LEFT"
       [text]="true"
@@ -10,64 +11,62 @@
     ></p-button>
   </div>
 
-  <p-card>
-    <form [formGroup]="todoForm" (ngSubmit)="onSubmit()">
-      <div class="field">
-        <label for="title">Title</label>
-        <input
-          id="title"
-          type="text"
-          pInputText
-          formControlName="title"
-          class="w-full"
-          placeholder="What you need to do?"
-        />
-        @if (todoForm.controls['title'].invalid && todoForm.controls['title'].touched) {
-          <small class="p-error"> Title is required </small>
-        }
-      </div>
+  <form [formGroup]="todoForm">
+    <div class="field">
+      <label for="title">Title</label>
+      <input
+        id="title"
+        type="text"
+        pInputText
+        formControlName="title"
+        class="w-full"
+        placeholder="What you need to do?"
+      />
+      @if (todoForm.controls['title'].invalid && todoForm.controls['title'].touched) {
+        <small class="p-error"> Title is required </small>
+      }
+    </div>
 
-      <div class="field-checkbox">
-        <p-checkbox formControlName="completed" [binary]="true" inputId="completed"> </p-checkbox>
-        <label for="completed">Mark as completed</label>
-      </div>
+    <div class="field-checkbox">
+      <p-checkbox formControlName="completed" [binary]="true" inputId="completed"> </p-checkbox>
+      <label for="completed">Mark as completed</label>
+    </div>
 
-      <div class="field">
-        <label for="description">Description</label>
-        <textarea
-          id="description"
-          pInputTextarea
-          formControlName="description"
-          rows="5"
-          class="w-full"
-          placeholder="Add some details about this task..."
-        >
-        </textarea>
-      </div>
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        pInputTextarea
+        formControlName="description"
+        rows="5"
+        class="w-full"
+        placeholder="Add some details about this task..."
+      >
+      </textarea>
+    </div>
+  </form>
 
-      <div class="action-buttons">
-        <p-button
-          [icon]="primeIcons.CHECK"
-          type="submit"
-          [label]="isNewTodo ? 'Create Task' : 'Update Task'"
-          severity="success"
-          [disabled]="todoForm.invalid"
-        >
-        </p-button>
+  <div class="action-buttons">
+    <p-button
+      [icon]="primeIcons.CHECK"
+      (click)="onSubmit()"
+      [label]="isNewTodo ? 'Create Task' : 'Update Task'"
+      severity="success"
+      [disabled]="todoForm.invalid"
+    >
+    </p-button>
 
-        @if (!isNewTodo) {
-          <p-button
-            type="button"
-            label="Delete Task"
-            [icon]="primeIcons.TRASH"
-            severity="danger"
-            (click)="confirmDelete()"
-          >
-          </p-button>
-        }
-      </div>
-    </form>
-  </p-card>
+    @if (!isNewTodo) {
+      <p-button
+        type="button"
+        label="Delete Task"
+        [icon]="primeIcons.TRASH"
+        severity="danger"
+        (click)="confirmDelete()"
+      >
+      </p-button>
+    }
+  </div>
 
   <p-confirmDialog />
 </div>
