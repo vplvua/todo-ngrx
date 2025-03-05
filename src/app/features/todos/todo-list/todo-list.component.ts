@@ -37,7 +37,6 @@ import { PrimeIcons } from 'primeng/api';
 export class TodoListComponent {
   todos$: Observable<Todo[]>;
   filter$: Observable<TodoFilter>;
-  loading$: Observable<boolean>;
   error$: Observable<string | null>;
   primeIcons = PrimeIcons;
 
@@ -48,7 +47,6 @@ export class TodoListComponent {
   ) {
     this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos);
     this.filter$ = this.store.select(TodoSelectors.selectTodoFilter);
-    this.loading$ = this.store.select(TodoSelectors.selectTodoLoading);
     this.error$ = this.store.select(TodoSelectors.selectTodoError);
   }
 

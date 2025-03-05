@@ -1,30 +1,30 @@
 <div class="todo-app">
-    <h2>Tasks</h2>
+  <h2>Tasks</h2>
 
-    <div class="control-section">
-      <app-todo-filter 
-        [currentFilter]="(filter$ | async)!" 
-        (filterChange)="onFilterChange($event)">
-      </app-todo-filter>
-      <p-button 
-        icon="pi pi-plus" 
-        label="Add Task" 
-        styleClass="p-button-success" 
-        (click)="navigateToDetail(null)">
-      </p-button>
-    </div>
+  <div class="flex justify-content-between mb-5">
+    <!-- <div class="control-section"> -->
+    <app-todo-filter [currentFilter]="(filter$ | async)!" (filterChange)="onFilterChange($event)">
+    </app-todo-filter>
+    <p-button
+      icon="pi pi-plus"
+      label="Add Task"
+      styleClass="p-button-success"
+      (click)="navigateToDetail(null)"
+    >
+    </p-button>
+  </div>
 
-    <div class="loading-error">
-      <div *ngIf="loading$ | async" class="loading">Loading...</div>
-      <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
-    </div>
+  <div class="loading-error">
+    <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
+  </div>
 
-   <p-table 
-    [value]="(todos$ | async) || []" 
-    [paginator]="true" 
+  <p-table
+    [value]="(todos$ | async) || []"
+    [paginator]="true"
     [rows]="7"
     [responsive]="true"
-    styleClass="p-datatable-sm">
+    styleClass="p-datatable-sm"
+  >
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 3rem"></th>
@@ -47,26 +47,28 @@
         </td>
         <td class="task-title">{{ todo.title }}</td>
         <td>
-          <p-tag 
-            [severity]="todo.completed ? 'success' : 'warning'" 
-            [value]="todo.completed ? 'Completed' : 'Active'">
+          <p-tag
+            [severity]="todo.completed ? 'success' : 'warning'"
+            [value]="todo.completed ? 'Completed' : 'Active'"
+          >
           </p-tag>
         </td>
         <td>
-          <p-button 
+          <p-button
             [icon]="primeIcons.PENCIL"
             [rounded]="true"
             [text]="true"
             class="p-button-rounded p-button-text p-button-warning"
             (click)="navigateToDetail(todo.id)"
-            >
+          >
           </p-button>
-          <p-button 
+          <p-button
             [icon]="primeIcons.TRASH"
             [text]="true"
             [rounded]="true"
             severity="danger"
-            (click)="confirmDelete(todo)">
+            (click)="confirmDelete(todo)"
+          >
           </p-button>
         </td>
       </tr>
@@ -74,9 +76,7 @@
     <ng-template pTemplate="emptymessage">
       <tr>
         <td colspan="5" class="text-center">
-          <div class="empty-list" *ngIf="!(loading$ | async)">
-            No to-dos found. Add a new one!
-          </div>
+          <div class="empty-list" *ngIf="!(todos$ | async)">No to-dos found. Add a new one!</div>
         </td>
       </tr>
     </ng-template>

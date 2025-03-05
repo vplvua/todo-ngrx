@@ -1,18 +1,26 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import { HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { finalize } from 'rxjs';
+import { finalize, Observable } from 'rxjs';
 
-import * as LoadingActions from '../../store/loading/loading.actions';
+import { LoadingActions } from '../../store/loading/loading.actions';
 
-export const loadingInterceptor: HttpInterceptorFn = (req, next) => {
+export function loadingInterceptor(
+  req: HttpRequest<unknown>,
+  next: HttpHandlerFn,
+): Observable<HttpEvent<unknown>> {
   const store = inject(Store);
 
-  store.dispatch(LoadingActions.startLoading());
+  const ignoreLoading = req.headers.has('X-Skip-Loader');
+  if (!ignoreLoading) {
+    store.dispatch(LoadingActions.incrementPendingRequests());
+  }
 
   return next(req).pipe(
     finalize(() => {
-      store.dispatch(LoadingActions.stopLoading());
-    })
+      if (!ignoreLoading) {
+        store.dispatch(LoadingActions.decrementPendingRequests());
+      }
+    }),
   );
-};
+}

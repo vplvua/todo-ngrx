@@ -1,23 +1,26 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { initialLoadingState } from './loading.state';
-import * as LoadingActions from './loading.actions';
+import { LoadingActions } from './loading.actions';
 
 export const loadingReducer = createReducer(
   initialLoadingState,
 
-  on(LoadingActions.startLoading, (state) => ({
+  on(LoadingActions.incrementPendingRequests, (state) => ({
     ...state,
-    isLoading: true,
     pendingRequests: state.pendingRequests + 1,
   })),
 
-  on(LoadingActions.stopLoading, (state) => {
-    const pendingRequests = state.pendingRequests - 1;
+  on(LoadingActions.decrementPendingRequests, (state) => {
+    const pendingRequests = Math.max(0, state.pendingRequests - 1);
     return {
       ...state,
-      isLoading: pendingRequests > 0,
-      pendingRequests: pendingRequests < 0 ? 0 : pendingRequests,
+      pendingRequests: pendingRequests,
     };
-  })
+  }),
+
+  on(LoadingActions.setLoadingState, (state) => ({
+    ...state,
+    isLoading: state.pendingRequests > 0,
+  })),
 );

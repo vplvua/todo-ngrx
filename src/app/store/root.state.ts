@@ -1,9 +1,18 @@
 import { TodoState } from '../features/todos/store/todo.state';
 import { ProjectState } from '../features/projects/store/project.state';
 import { LoadingState } from './loading/loading.state';
+import { ActionReducerMap } from '@ngrx/store';
+import { todoReducer } from '../features/todos/store/todo.reducer';
+import { loadingReducer } from './loading/loading.reducer';
 
 export interface RootState {
   todos: TodoState;
-  projects: ProjectState;
+  // projects: ProjectState;
   loading: LoadingState;
 }
+
+export const rootReducer: ActionReducerMap<RootState> = {
+  todos: todoReducer,
+  // projects: null,
+  loading: loadingReducer,
+};

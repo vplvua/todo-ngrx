@@ -93,9 +93,9 @@ export class TodoDetailComponent {
         if (todo) {
           this.selectedTodo = todo as Todo;
 
-          this.todoForm.patchValue({
+          this.todoForm.setValue({
             title: todo.title,
-            description: todo.description,
+            description: todo.description || '',
             completed: todo.completed,
           });
         }

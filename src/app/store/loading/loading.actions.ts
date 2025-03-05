@@ -1,4 +1,10 @@
-import { createAction } from '@ngrx/store';
+import { createAction, createActionGroup, emptyProps } from '@ngrx/store';
 
-export const startLoading = createAction('[Loading] Start Loading');
-export const stopLoading = createAction('[Loading] Stop Loading');
+export const LoadingActions = createActionGroup({
+  source: 'Loading',
+  events: {
+    'Increment pending requests': emptyProps(),
+    'Decrement pending requests': emptyProps(),
+    'Set loading state': emptyProps(),
+  },
+});

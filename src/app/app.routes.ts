@@ -20,61 +20,55 @@ export const routes: Routes = [
       },
       {
         path: 'todos',
-        providers: [
-          provideState('todos', todoReducer),
-          provideEffects(TodoEffects),
-        ],
+        providers: [provideEffects(TodoEffects)],
         children: [
           {
             path: '',
             loadComponent: () =>
               import('./features/todos/todo-list/todo-list.component').then(
-                (c) => c.TodoListComponent
+                (c) => c.TodoListComponent,
               ),
           },
           {
             path: 'new',
             loadComponent: () =>
               import('./features/todos/todo-detail/todo-detail.component').then(
-                (c) => c.TodoDetailComponent
+                (c) => c.TodoDetailComponent,
               ),
           },
           {
             path: ':id',
             loadComponent: () =>
               import('./features/todos/todo-detail/todo-detail.component').then(
-                (c) => c.TodoDetailComponent
+                (c) => c.TodoDetailComponent,
               ),
           },
         ],
       },
       {
         path: 'projects',
-        providers: [
-          provideState('projects', projectReducer),
-          provideEffects(ProjectEffects),
-        ],
+        providers: [provideEffects(ProjectEffects)],
         children: [
           {
             path: '',
             loadComponent: () =>
-              import(
-                './features/projects/project-list/project-list.component'
-              ).then((c) => c.ProjectListComponent),
+              import('./features/projects/project-list/project-list.component').then(
+                (c) => c.ProjectListComponent,
+              ),
           },
           {
             path: ':id',
             loadComponent: () =>
-              import(
-                './features/projects/project-detail/project-detail.component'
-              ).then((c) => c.ProjectDetailComponent),
+              import('./features/projects/project-detail/project-detail.component').then(
+                (c) => c.ProjectDetailComponent,
+              ),
           },
           {
             path: ':id/todos',
             loadComponent: () =>
-              import(
-                './features/projects/project-todos/project-todos.component'
-              ).then((c) => c.ProjectTodosComponent),
+              import('./features/projects/project-todos/project-todos.component').then(
+                (c) => c.ProjectTodosComponent,
+              ),
           },
         ],
       },
