@@ -97,3 +97,5 @@ export const addTodoToProjectFailure = createAction(
   '[Project] Add Todo to Project Failure',
   props<{ error: string }>(),
 );
+
+export const clearProjectErrors = createAction('[Project] Clear Project Errors');

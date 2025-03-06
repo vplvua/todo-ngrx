@@ -23,7 +23,7 @@ export class ProjectService {
   }
 
   getProjectTodos(projectId: string): Observable<Todo[]> {
-    return this.http.get<Todo[]>(`${this.apiUrl}/projects/${projectId}/todos`);
+    return this.http.get<Todo[]>(`${this.apiUrl}/todos?projectId=${projectId}`);
   }
 
   addProject(name: string, description: string): Observable<Project> {
@@ -50,8 +50,6 @@ export class ProjectService {
   }
 
   addTodoToProject(projectId: string, title: string, description: string): Observable<Todo> {
-    console.log('addTodoToProject', projectId, title, description);
-
     const todo: Partial<Todo> = {
       title,
       description,

@@ -1,6 +1,16 @@
 <div class="project-detail p-3">
   <h2>{{ isNewProject ? 'Add New Project' : 'Edit Project' }}</h2>
 
+  <div class="control-section">
+    <p-button
+      icon="pi pi-arrow-left"
+      label="Back"
+      styleClass="p-button-outlined p-button-secondary mr-2"
+      type="button"
+      (click)="goBack()"
+    ></p-button>
+  </div>
+
   <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
     <div class="formgrid grid">
       <div class="field col-12">
@@ -30,14 +40,7 @@
       </div>
     </div>
 
-    <div class="flex justify-content-end">
-      <p-button
-        icon="pi pi-arrow-left"
-        label="Back"
-        styleClass="p-button-outlined p-button-secondary mr-2"
-        type="button"
-        (click)="goBack()"
-      ></p-button>
+    <div>
       <p-button icon="pi pi-save" label="Save" type="submit"></p-button>
     </div>
   </form>

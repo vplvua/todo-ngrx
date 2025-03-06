@@ -30,6 +30,7 @@
         <th style="width: 3rem"></th>
         <th>Title</th>
         <th style="width: 8rem">Status</th>
+        <th style="width: 10rem">Project</th>
         <th style="width: 8rem">Actions</th>
       </tr>
     </ng-template>
@@ -52,6 +53,13 @@
             [value]="todo.completed ? 'Completed' : 'Active'"
           >
           </p-tag>
+        </td>
+        <td>
+          @if (todo.projectName) {
+            <p-tag severity="info" [value]="todo.projectName"></p-tag>
+          } @else {
+            <span>---</span>
+          }
         </td>
         <td>
           <p-button

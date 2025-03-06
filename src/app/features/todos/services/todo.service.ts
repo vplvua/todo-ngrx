@@ -17,12 +17,16 @@ export class TodoService {
     return this.http.get<Todo[]>(this.apiUrl + '/todos');
   }
 
-  addTodo(title: string): Observable<Todo> {
+  addTodo(title: string, projectId?: string | null): Observable<Todo> {
     const todo: Partial<Todo> = {
       title,
       completed: false,
       createdAt: new Date(),
     };
+
+    if (projectId) {
+      todo.projectId = projectId;
+    }
 
     return this.http.post<Todo>(this.apiUrl + '/todos', todo);
   }
@@ -46,7 +50,7 @@ export class TodoService {
         };
 
         return this.http.put<Todo>(`${this.apiUrl}/todos/${id}`, updatedTodo);
-      })
+      }),
     );
   }
 

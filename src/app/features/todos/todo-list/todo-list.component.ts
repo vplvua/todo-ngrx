@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { TodoFilterComponent } from '../todo-filter/todo-filter.component';
 import { Todo, TodoFilter } from '../todo.model';
 import * as TodoActions from '../store/todo.actions';
 import * as TodoSelectors from '../store/todo.selectors';
+import * as ProjectSelectors from '../../projects/store/project.selector';
 
 // Prime NG Components
 import { ButtonModule } from 'primeng/button';
@@ -45,7 +46,20 @@ export class TodoListComponent {
     private router: Router,
     private confirmationService: ConfirmationService,
   ) {
-    this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos);
+    this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos).pipe(
+      switchMap((todos) => {
+        return combineLatest(
+          todos.map((todo) => {
+            return this.store.select(ProjectSelectors.selectAllProjects).pipe(
+              map((projects) => {
+                const project = projects.find((p) => p.id === todo.projectId);
+                return { ...todo, projectName: project?.name };
+              }),
+            );
+          }),
+        );
+      }),
+    );
     this.filter$ = this.store.select(TodoSelectors.selectTodoFilter);
     this.error$ = this.store.select(TodoSelectors.selectTodoError);
   }

@@ -6,6 +6,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { Todo } from '../todo.model';
 import * as TodoActions from '../store/todo.actions';
 import * as TodoSelectors from '../store/todo.selectors';
+import { selectAllProjects } from '../../projects/store/project.selector';
 
 // PrimeNG Imports
 import { ButtonModule } from 'primeng/button';
@@ -17,7 +18,8 @@ import { MessageModule } from 'primeng/message';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, PrimeIcons } from 'primeng/api';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { filter, Observable, of, Subject, switchMap, take, takeUntil, EMPTY } from 'rxjs';
+import { filter, Observable, of, Subject, switchMap, take, takeUntil, EMPTY, map, tap } from 'rxjs';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-todo-detail',
@@ -34,6 +36,7 @@ import { filter, Observable, of, Subject, switchMap, take, takeUntil, EMPTY } fr
     CheckboxModule,
     MessageModule,
     ConfirmDialogModule,
+    DropdownModule,
   ],
   providers: [ConfirmationService],
   templateUrl: './todo-detail.component.html',
@@ -47,6 +50,7 @@ export class TodoDetailComponent {
   // todo$: Observable<Todo | null | undefined>;
   private destroy$ = new Subject<void>();
   primeIcons = PrimeIcons;
+  projects$: Observable<any[]>;
 
   constructor(
     private fb: FormBuilder,
@@ -59,7 +63,19 @@ export class TodoDetailComponent {
       title: ['', Validators.required],
       description: [''],
       completed: [false],
+      projectId: [''],
     });
+
+    this.projects$ = this.store.select(selectAllProjects).pipe(
+      map((projects) => {
+        return projects.map((project) => {
+          return {
+            label: project.name,
+            value: project.id,
+          };
+        });
+      }),
+    );
   }
 
   ngOnInit(): void {
@@ -97,6 +113,7 @@ export class TodoDetailComponent {
             title: todo.title,
             description: todo.description || '',
             completed: todo.completed,
+            projectId: todo.projectId,
           });
         }
       });
@@ -116,6 +133,7 @@ export class TodoDetailComponent {
         title: formValues.title || '',
         description: formValues.description || '',
         completed: !!formValues.completed,
+        projectId: formValues.projectId,
         updatedAt: new Date(),
       };
 
@@ -133,8 +151,6 @@ export class TodoDetailComponent {
     if (this.isNewTodo || !this.todoId) {
       return;
     }
-
-    console.log('confirmDelete');
 
     this.confirmationService.confirm({
       header: 'Delete Confirmation',

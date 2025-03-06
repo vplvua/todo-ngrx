@@ -110,4 +110,10 @@ export const todoReducer = createReducer(
     ...state,
     filter,
   })),
+
+  // Clear Errors
+  on(TodoActions.clearTodoError, (state) => ({
+    ...state,
+    error: null,
+  })),
 );

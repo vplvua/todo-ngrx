@@ -15,6 +15,7 @@ export const projectReducer = createReducer(
   on(ProjectActions.loadProjectsSuccess, (state, { projects }) => ({
     ...state,
     projects,
+    error: null,
   })),
 
   on(ProjectActions.loadProjectsFailure, (state, { error }) => ({
@@ -25,11 +26,13 @@ export const projectReducer = createReducer(
   // Add Project
   on(ProjectActions.addProject, (state) => ({
     ...state,
+    error: null,
   })),
 
   on(ProjectActions.addProjectSuccess, (state, { project }) => ({
     ...state,
     projects: [project, ...state.projects],
+    error: null,
   })),
 
   on(ProjectActions.addProjectFailure, (state, { error }) => ({
@@ -41,11 +44,13 @@ export const projectReducer = createReducer(
   on(ProjectActions.updateProject, (state) => ({
     ...state,
     loading: true,
+    error: null,
   })),
 
   on(ProjectActions.updateProjectSuccess, (state, { project }) => ({
     ...state,
     projects: state.projects.map((p) => (p.id === project.id ? project : p)),
+    error: null,
   })),
 
   on(ProjectActions.updateProjectFailure, (state, { error }) => ({
@@ -57,12 +62,14 @@ export const projectReducer = createReducer(
   // Delete Project
   on(ProjectActions.deleteProject, (state) => ({
     ...state,
+    error: null,
   })),
 
   on(ProjectActions.deleteProjectSuccess, (state, { id }) => ({
     ...state,
     projects: state.projects.filter((p) => p.id !== id),
     selectedProjectId: state.selectedProjectId === id ? null : state.selectedProjectId,
+    error: null,
   })),
 
   on(ProjectActions.deleteProjectFailure, (state, { error }) => ({
@@ -74,5 +81,12 @@ export const projectReducer = createReducer(
   on(ProjectActions.selectProject, (state, { id }) => ({
     ...state,
     selectedProjectId: id,
+    error: null,
+  })),
+
+  // Clear Project Errors
+  on(ProjectActions.clearProjectErrors, (state) => ({
+    ...state,
+    error: null,
   })),
 );

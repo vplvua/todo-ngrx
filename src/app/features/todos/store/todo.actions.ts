@@ -58,3 +58,6 @@ export const setTodoFilter = createAction(
   '[Todo Filter] Set Todo Filter',
   props<{ filter: TodoFilter }>(),
 );
+
+// Clear Errors
+export const clearTodoError = createAction('[Todo] Clear Todo Error');

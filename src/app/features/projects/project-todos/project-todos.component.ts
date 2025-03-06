@@ -77,6 +77,7 @@ export class ProjectTodosComponent implements OnInit, OnDestroy {
     const id = this.route.snapshot.paramMap.get('id');
 
     if (id) {
+      this.projectId = id;
       this.store.dispatch(ProjectActions.selectProject({ id }));
       this.store.dispatch(ProjectActions.loadProjectTodos({ projectId: this.projectId }));
     }

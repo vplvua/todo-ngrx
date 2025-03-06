@@ -45,7 +45,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(ProjectActions.loadProjects());
+    // this.store.dispatch(ProjectActions.loadProjects());
   }
 
   navigateToDetail(id: string | null): void {

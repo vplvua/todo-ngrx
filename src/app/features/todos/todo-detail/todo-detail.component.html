@@ -5,8 +5,8 @@
     <p-button
       [icon]="primeIcons.ARROW_LEFT"
       [text]="true"
-      label="Back"
-      severity="success"
+      label="Back to Tasks"
+      styleClass="p-button-outlined p-button-secondary mr-2"
       (click)="navigateBack()"
     ></p-button>
   </div>
@@ -32,6 +32,19 @@
       <label for="completed">Mark as completed</label>
     </div>
 
+    <div class="field flex flex-column">
+      <label for="project">Project</label>
+      <p-dropdown
+        id="project"
+        formControlName="projectId"
+        [options]="(projects$ | async) || []"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Select a project (optional)"
+        [showClear]="true"
+      ></p-dropdown>
+    </div>
+
     <div class="field">
       <label for="description">Description</label>
       <textarea
@@ -48,9 +61,9 @@
 
   <div class="action-buttons">
     <p-button
-      [icon]="primeIcons.CHECK"
+      [icon]="primeIcons.SAVE"
       (click)="onSubmit()"
-      [label]="isNewTodo ? 'Create Task' : 'Update Task'"
+      [label]="'Save Task'"
       severity="success"
       [disabled]="todoForm.invalid"
     >

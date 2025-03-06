@@ -14,7 +14,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
-    providers: [provideEffects(TodoEffects)],
+    providers: [provideEffects(TodoEffects, ProjectEffects)],
     children: [
       {
         path: '',

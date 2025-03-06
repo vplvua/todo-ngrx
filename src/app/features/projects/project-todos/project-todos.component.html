@@ -1,20 +1,19 @@
 <div class="project-todos">
-  <div class="flex justify-content-between align-items-center mb-4">
-    <h2>Tasks for Project: {{ (project$ | async)?.name }}</h2>
-    <div class="flex">
-      <p-button
-        icon="pi pi-arrow-left"
-        label="Back to Projects"
-        styleClass="p-button-outlined p-button-secondary mr-2"
-        (click)="goBack()"
-      ></p-button>
-      <p-button
-        icon="pi pi-plus"
-        label="Add Task"
-        styleClass="p-button-success"
-        (click)="openAddTaskDialog()"
-      ></p-button>
-    </div>
+  <h2>Tasks for Project: {{ (project$ | async)?.name }}</h2>
+
+  <div class="flex justify-content-between mb-5">
+    <p-button
+      [icon]="primeIcons.ARROW_LEFT"
+      label="Back to Projects"
+      styleClass="p-button-outlined p-button-secondary mr-2"
+      (click)="goBack()"
+    ></p-button>
+    <p-button
+      [icon]="primeIcons.PLUS"
+      label="Add Task"
+      styleClass="p-button-success"
+      (click)="openAddTaskDialog()"
+    ></p-button>
   </div>
 
   <div class="loading-error">

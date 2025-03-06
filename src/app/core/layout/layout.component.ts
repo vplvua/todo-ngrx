@@ -10,6 +10,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { selectAllTodos } from '../../features/todos/store/todo.selectors';
 import { loadTodos } from '../../features/todos/store/todo.actions';
+import { loadProjects } from '../../features/projects/store/project.actions';
 
 @Component({
   selector: 'app-layout',
@@ -25,10 +26,10 @@ export class AppLayoutComponent {
 
   constructor(private store: Store) {
     this.store.dispatch(loadTodos());
+    this.store.dispatch(loadProjects());
 
     this.initMenuItems();
     this.store.select(selectAllTodos).subscribe((todos) => {
-      console.log(todos);
       this.isTasksDisabled = todos.length === 0;
       this.updateTasksMenuItem();
     });
