@@ -1,1 +1,44 @@
-<p>project-detail works!</p>
+<div class="project-detail p-3">
+  <h2>{{ isNewProject ? 'Add New Project' : 'Edit Project' }}</h2>
+
+  <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+    <div class="formgrid grid">
+      <div class="field col-12">
+        <label for="name" class="block">Name *</label>
+        <input
+          id="name"
+          type="text"
+          pInputText
+          formControlName="name"
+          class="w-full"
+          [ngClass]="{ 'ng-invalid ng-dirty': submitted && f['name'].errors }"
+        />
+        <small *ngIf="submitted && f['name'].errors?.['required']" class="p-error">
+          Name is required.
+        </small>
+      </div>
+
+      <div class="field col-12">
+        <label for="description" class="block">Description</label>
+        <textarea
+          id="description"
+          pInputTextarea
+          formControlName="description"
+          rows="5"
+          class="w-full"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="flex justify-content-end">
+      <p-button
+        icon="pi pi-arrow-left"
+        label="Back"
+        styleClass="p-button-outlined p-button-secondary mr-2"
+        type="button"
+        (click)="goBack()"
+      ></p-button>
+      <p-button icon="pi pi-save" label="Save" type="submit"></p-button>
+    </div>
+  </form>
+</div>

@@ -1,1 +1,76 @@
-<p>project-list works!</p>
+<div class="project-app">
+  <h2>Projects</h2>
+
+  <div class="flex justify-content-between mb-5">
+    <p-button
+      icon="pi pi-plus"
+      label="Add Project"
+      styleClass="p-button-success"
+      (click)="navigateToDetail(null)"
+    >
+    </p-button>
+  </div>
+
+  <div class="loading-error">
+    <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
+  </div>
+
+  <p-table
+    [value]="(projects$ | async) || []"
+    [paginator]="true"
+    [rows]="7"
+    [responsive]="true"
+    styleClass="p-datatable-sm"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+        <th style="width: 12rem">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project>
+      <tr>
+        <td>{{ project.name }}</td>
+        <td>{{ project.description }}</td>
+        <td>
+          <p-button
+            [icon]="primeIcons.LIST"
+            [rounded]="true"
+            [text]="true"
+            pTooltip="View Tasks"
+            (click)="navigateToTodos(project.id)"
+          >
+          </p-button>
+          <p-button
+            [icon]="primeIcons.PENCIL"
+            [rounded]="true"
+            [text]="true"
+            class="p-button-rounded p-button-text p-button-warning"
+            (click)="navigateToDetail(project.id)"
+          >
+          </p-button>
+          <p-button
+            [icon]="primeIcons.TRASH"
+            [text]="true"
+            [rounded]="true"
+            severity="danger"
+            (click)="confirmDelete(project)"
+          >
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="3" class="text-center">
+          <div class="empty-list" *ngIf="!(projects$ | async)">
+            No projects found. Add a new one!
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-confirmDialog />
+</div>

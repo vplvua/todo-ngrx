@@ -1,1 +1,128 @@
-<p>project-todos works!</p>
+<div class="project-todos">
+  <div class="flex justify-content-between align-items-center mb-4">
+    <h2>Tasks for Project: {{ (project$ | async)?.name }}</h2>
+    <div class="flex">
+      <p-button
+        icon="pi pi-arrow-left"
+        label="Back to Projects"
+        styleClass="p-button-outlined p-button-secondary mr-2"
+        (click)="goBack()"
+      ></p-button>
+      <p-button
+        icon="pi pi-plus"
+        label="Add Task"
+        styleClass="p-button-success"
+        (click)="openAddTaskDialog()"
+      ></p-button>
+    </div>
+  </div>
+
+  <div class="loading-error">
+    <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
+  </div>
+
+  <p-table
+    [value]="(todos$ | async) || []"
+    [paginator]="true"
+    [rows]="7"
+    [responsive]="true"
+    styleClass="p-datatable-sm"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 3rem"></th>
+        <th>Title</th>
+        <th>Description</th>
+        <th style="width: 8rem">Status</th>
+        <th style="width: 8rem">Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-todo>
+      <tr [class.completed-task]="todo.completed">
+        <td>
+          <p-button
+            [icon]="todo.completed ? primeIcons.CHECK_CIRCLE : primeIcons.CIRCLE"
+            [text]="true"
+            [outlined]="!todo.completed"
+            [severity]="todo.completed ? 'success' : 'secondary'"
+            (onClick)="onToggleTodo(todo.id)"
+          >
+          </p-button>
+        </td>
+        <td class="task-title">{{ todo.title }}</td>
+        <td>{{ todo.description }}</td>
+        <td>
+          <p-tag
+            [severity]="todo.completed ? 'success' : 'warning'"
+            [value]="todo.completed ? 'Completed' : 'Active'"
+          >
+          </p-tag>
+        </td>
+        <td>
+          <p-button
+            [icon]="primeIcons.TRASH"
+            [text]="true"
+            [rounded]="true"
+            severity="danger"
+            (click)="confirmDelete(todo)"
+          >
+          </p-button>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5" class="text-center">
+          <div class="empty-list">No tasks found for this project. Add a new one!</div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-confirmDialog></p-confirmDialog>
+
+  <p-dialog
+    [(visible)]="displayAddTaskDialog"
+    [style]="{ width: '450px' }"
+    header="Add New Task"
+    [modal]="true"
+    styleClass="p-fluid"
+  >
+    <ng-template pTemplate="content">
+      <form [formGroup]="taskForm">
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" pInputText id="title" formControlName="title" />
+          <small *ngIf="submitted && f['title'].errors?.['required']" class="p-error">
+            Title is required.
+          </small>
+        </div>
+
+        <div class="field">
+          <label for="description">Description</label>
+          <textarea
+            pInputTextarea
+            id="description"
+            formControlName="description"
+            rows="5"
+          ></textarea>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+      <p-button
+        icon="pi pi-times"
+        label="Cancel"
+        styleClass="p-button-text"
+        (click)="hideAddTaskDialog()"
+      ></p-button>
+      <p-button
+        icon="pi pi-check"
+        label="Save"
+        (click)="addTodoToProject()"
+        [disabled]="taskForm.invalid"
+      ></p-button>
+    </ng-template>
+  </p-dialog>
+</div>
