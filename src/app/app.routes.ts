@@ -7,19 +7,26 @@ import { TodoEffects } from './features/todos/store/todo.effects';
 import { projectReducer } from './features/projects/store/project.reducer';
 import { ProjectEffects } from './features/projects/store/project.effects';
 import { AppLayoutComponent } from './core/layout/layout.component';
+import { TodosGuard } from './core/guards/todos.guard';
+import { HomeComponent } from './core/home/home.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
   {
     path: '',
     component: AppLayoutComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'todos',
-        pathMatch: 'full',
+        path: 'home',
+        component: HomeComponent,
       },
       {
         path: 'todos',
+        canActivate: [TodosGuard],
         providers: [provideEffects(TodoEffects)],
         children: [
           {
@@ -76,6 +83,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'todos',
+    redirectTo: '',
   },
 ];
