@@ -8,6 +8,7 @@ import { projectReducer } from './features/projects/store/project.reducer';
 import { ProjectEffects } from './features/projects/store/project.effects';
 import { AppLayoutComponent } from './core/layout/layout.component';
 import { HomeComponent } from './components/home/home.component';
+import { dataAvailableGuard } from './core/guards/data.guard';
 
 export const routes: Routes = [
   {
@@ -26,6 +27,7 @@ export const routes: Routes = [
       {
         path: 'todos',
         providers: [provideEffects(TodoEffects)],
+        canActivate: [dataAvailableGuard],
         children: [
           {
             path: '',
