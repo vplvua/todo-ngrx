@@ -50,6 +50,8 @@ export class ProjectService {
   }
 
   addTodoToProject(projectId: string, title: string, description: string): Observable<Todo> {
+    console.log('addTodoToProject', projectId, title, description);
+
     const todo: Partial<Todo> = {
       title,
       description,
@@ -58,6 +60,6 @@ export class ProjectService {
       createdAt: new Date(),
     };
 
-    return this.http.post<Todo>(`${this.apiUrl}/projects/${projectId}/todos`, todo);
+    return this.http.post<Todo>(`${this.apiUrl}/todos`, todo);
   }
 }

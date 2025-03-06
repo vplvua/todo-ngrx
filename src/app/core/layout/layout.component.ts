@@ -9,6 +9,7 @@ import { selectIsLoading } from '../../store/loading/loading.selectors';
 import { MenubarModule } from 'primeng/menubar';
 import { PrimeIcons, MenuItem } from 'primeng/api';
 import { selectAllTodos } from '../../features/todos/store/todo.selectors';
+import { loadTodos } from '../../features/todos/store/todo.actions';
 
 @Component({
   selector: 'app-layout',
@@ -23,10 +24,22 @@ export class AppLayoutComponent {
   isTasksDisabled = false;
 
   constructor(private store: Store) {
+    this.store.dispatch(loadTodos());
+
     this.initMenuItems();
     this.store.select(selectAllTodos).subscribe((todos) => {
+      console.log(todos);
       this.isTasksDisabled = todos.length === 0;
+      this.updateTasksMenuItem();
     });
+  }
+
+  private updateTasksMenuItem() {
+    const tasksMenuItem = this.items.find((item) => item.routerLink === '/projects');
+    if (tasksMenuItem) {
+      tasksMenuItem.disabled = this.isTasksDisabled;
+    }
+    this.items = [...this.items];
   }
 
   private initMenuItems() {
@@ -40,7 +53,7 @@ export class AppLayoutComponent {
         label: 'Tasks',
         icon: PrimeIcons.CHECK_SQUARE,
         routerLink: '/todos',
-        disabled: this.isTasksDisabled,
+        // disabled: this.isTasksDisabled,
       },
       {
         label: 'Projects',

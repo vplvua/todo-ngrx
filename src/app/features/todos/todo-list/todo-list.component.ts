@@ -51,7 +51,7 @@ export class TodoListComponent {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(TodoActions.loadTodos());
+    // this.store.dispatch(TodoActions.loadTodos());
   }
 
   navigateToDetail(id: string | null): void {

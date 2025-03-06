@@ -14,6 +14,7 @@ export const routes: Routes = [
   {
     path: '',
     component: AppLayoutComponent,
+    providers: [provideEffects(TodoEffects)],
     children: [
       {
         path: '',
@@ -26,8 +27,8 @@ export const routes: Routes = [
       },
       {
         path: 'todos',
-        providers: [provideEffects(TodoEffects)],
-        canActivate: [dataAvailableGuard],
+        // providers: [provideEffects(TodoEffects)],
+        // canActivate: [dataAvailableGuard],
         children: [
           {
             path: '',
@@ -55,6 +56,7 @@ export const routes: Routes = [
       {
         path: 'projects',
         providers: [provideEffects(ProjectEffects)],
+        canActivate: [dataAvailableGuard],
         children: [
           {
             path: '',
@@ -83,6 +85,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'todos',
+    redirectTo: 'home',
   },
 ];
