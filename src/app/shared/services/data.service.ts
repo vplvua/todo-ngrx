@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { map, Observable, of } from 'rxjs';
+import { catchError, map, Observable, of, take, timeout } from 'rxjs';
 
 import { selectAllTodos } from '../../features/todos/store/todo.selectors';
 import { Todo } from '../../features/todos/todo.model';
@@ -21,14 +21,18 @@ export class DataService {
     switch (path) {
       case 'todos':
         return this.store.select(selectAllTodos).pipe(
+          timeout(3000),
           map((todos: Todo[]) => {
-            if (todos.length > 0) {
-              return true;
-            } else {
-              // this.router.navigate(['/']);
-              return false;
-            }
+            return todos.length > 0;
+            // if (todos.length > 0) {
+            //   return true;
+            // } else {
+            //   this.router.navigate(['/']);
+            //   return false;
+            // }
           }),
+          catchError(() => of(false)),
+          take(1),
         );
 
       default:
