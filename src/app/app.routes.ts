@@ -7,6 +7,7 @@ import { TodoEffects } from './features/todos/store/todo.effects';
 import { projectReducer } from './features/projects/store/project.reducer';
 import { ProjectEffects } from './features/projects/store/project.effects';
 import { AppLayoutComponent } from './core/layout/layout.component';
+import { HomeComponent } from './components/home/home.component';
 
 export const routes: Routes = [
   {
@@ -15,8 +16,12 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'todos',
+        redirectTo: 'home',
         pathMatch: 'full',
+      },
+      {
+        path: 'home',
+        component: HomeComponent,
       },
       {
         path: 'todos',

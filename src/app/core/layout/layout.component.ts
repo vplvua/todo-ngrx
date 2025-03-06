@@ -27,6 +27,11 @@ export class AppLayoutComponent {
   private initMenuItems() {
     this.items = [
       {
+        label: 'Home',
+        icon: PrimeIcons.HOME,
+        routerLink: '/home',
+      },
+      {
         label: 'Tasks',
         icon: PrimeIcons.CHECK_SQUARE,
         routerLink: '/todos',
