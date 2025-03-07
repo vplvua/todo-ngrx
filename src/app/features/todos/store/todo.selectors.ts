@@ -18,6 +18,8 @@ export const selectSelectedTodoId = createSelector(
   (state: TodoState) => state.selectedTodoId,
 );
 
+export const selectHasTodos = createSelector(selectTotal, (total) => total > 0);
+
 export const selectSelectedTodo = createSelector(
   selectTodoEntities,
   selectSelectedTodoId,

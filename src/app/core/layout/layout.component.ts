@@ -8,7 +8,7 @@ import { selectIsLoading } from '../../store/loading/loading.selectors';
 // PrimeNG imports
 import { MenubarModule } from 'primeng/menubar';
 import { PrimeIcons, MenuItem } from 'primeng/api';
-import { selectAllTodos } from '../../features/todos/store/todo.selectors';
+import { selectHasTodos } from '../../features/todos/store/todo.selectors';
 import { loadTodos } from '../../features/todos/store/todo.actions';
 import { loadProjects } from '../../features/projects/store/project.actions';
 
@@ -22,23 +22,22 @@ import { loadProjects } from '../../features/projects/store/project.actions';
 export class AppLayoutComponent {
   isLoading$ = this.store.select(selectIsLoading);
   items: MenuItem[] = [];
-  isTasksDisabled = false;
+  isTasksDisabled$ = this.store.select((state) => !selectHasTodos(state));
 
   constructor(private store: Store) {
     this.store.dispatch(loadTodos());
     this.store.dispatch(loadProjects());
 
     this.initMenuItems();
-    this.store.select(selectAllTodos).subscribe((todos) => {
-      this.isTasksDisabled = todos.length === 0;
-      this.updateTasksMenuItem();
+    this.isTasksDisabled$.subscribe((isDisabled) => {
+      this.updateTasksMenuItem(isDisabled);
     });
   }
 
-  private updateTasksMenuItem() {
+  private updateTasksMenuItem(isProjectsDisabled: boolean) {
     const tasksMenuItem = this.items.find((item) => item.routerLink === '/projects');
     if (tasksMenuItem) {
-      tasksMenuItem.disabled = this.isTasksDisabled;
+      tasksMenuItem.disabled = isProjectsDisabled;
     }
     this.items = [...this.items];
   }
@@ -54,7 +53,6 @@ export class AppLayoutComponent {
         label: 'Tasks',
         icon: PrimeIcons.CHECK_SQUARE,
         routerLink: '/todos',
-        // disabled: this.isTasksDisabled,
       },
       {
         label: 'Projects',
