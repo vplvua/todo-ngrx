@@ -113,7 +113,7 @@ export class TodoDetailComponent {
             title: todo.title,
             description: todo.description || '',
             completed: todo.completed,
-            projectId: todo.projectId,
+            projectId: todo.projectId || null,
           });
         }
       });
