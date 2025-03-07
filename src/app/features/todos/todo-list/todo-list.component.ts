@@ -46,20 +46,21 @@ export class TodoListComponent {
     private router: Router,
     private confirmationService: ConfirmationService,
   ) {
-    this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos).pipe(
-      switchMap((todos) => {
-        return combineLatest(
-          todos.map((todo) => {
-            return this.store.select(ProjectSelectors.selectAllProjects).pipe(
-              map((projects) => {
-                const project = projects.find((p) => p.id === todo.projectId);
-                return { ...todo, projectName: project?.name };
-              }),
-            );
-          }),
-        );
-      }),
-    );
+    this.todos$ = this.store.select(TodoSelectors.selectTodosWithProjects);
+    // this.todos$ = this.store.select(TodoSelectors.selectFilteredTodos).pipe(
+    //   switchMap((todos) => {
+    //     return combineLatest(
+    //       todos.map((todo) => {
+    //         return this.store.select(ProjectSelectors.selectAllProjects).pipe(
+    //           map((projects) => {
+    //             const project = projects.find((p) => p.id === todo.projectId);
+    //             return { ...todo, projectName: project?.name };
+    //           }),
+    //         );
+    //       }),
+    //     );
+    //   }),
+    // );
     this.filter$ = this.store.select(TodoSelectors.selectTodoFilter);
     this.error$ = this.store.select(TodoSelectors.selectTodoError);
   }

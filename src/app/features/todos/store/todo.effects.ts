@@ -28,8 +28,8 @@ export class TodoEffects {
   addTodo$ = createEffect(() =>
     this.actions$.pipe(
       ofType(TodoActions.addTodo),
-      mergeMap(({ title }) =>
-        this.todoService.addTodo(title).pipe(
+      mergeMap(({ todo }) =>
+        this.todoService.addTodo(todo).pipe(
           map((todo) => TodoActions.addTodoSuccess({ todo })),
           catchError((error) => of(TodoActions.addTodoFailure({ error: error.message }))),
         ),

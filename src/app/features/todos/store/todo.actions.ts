@@ -14,7 +14,7 @@ export const loadTodosFailure = createAction(
 );
 
 // Add Todo
-export const addTodo = createAction('[Todo] Add Todo', props<{ title: string }>());
+export const addTodo = createAction('[Todo] Add Todo', props<{ todo: Partial<Todo> }>());
 export const addTodoSuccess = createAction('[Todo] Add Todo Success', props<{ todo: Todo }>());
 export const addTodoFailure = createAction('[Todo] Add Todo Failure', props<{ error: string }>());
 

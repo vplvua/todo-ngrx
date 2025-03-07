@@ -17,18 +17,13 @@ export class TodoService {
     return this.http.get<Todo[]>(this.apiUrl + '/todos');
   }
 
-  addTodo(title: string, projectId?: string | null): Observable<Todo> {
-    const todo: Partial<Todo> = {
-      title,
-      completed: false,
+  addTodo(todo: Partial<Todo>): Observable<Todo> {
+    const newTodo: Partial<Todo> = {
+      ...todo,
       createdAt: new Date(),
     };
 
-    if (projectId) {
-      todo.projectId = projectId;
-    }
-
-    return this.http.post<Todo>(this.apiUrl + '/todos', todo);
+    return this.http.post<Todo>(this.apiUrl + '/todos', newTodo);
   }
 
   updateTodo(todo: Todo): Observable<Todo> {

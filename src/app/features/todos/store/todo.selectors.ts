@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 import { TodoState, todoAdapter } from './todo.state';
 import { TodoFilter } from '../todo.model';
+import * as ProjectSelectors from '../../projects/store/project.selector';
 
 export const selectTodoState = createFeatureSelector<TodoState>('todos');
 
@@ -42,3 +43,14 @@ export const selectFilteredTodos = createSelector(
 );
 
 export const selectTodoError = createSelector(selectTodoState, (state: TodoState) => state.error);
+
+export const selectTodosWithProjects = createSelector(
+  selectFilteredTodos,
+  ProjectSelectors.selectAllProjects,
+  (todos, projects) => {
+    return todos.map((todo) => {
+      const project = projects.find((p) => p.id === todo.projectId);
+      return { ...todo, projectName: project?.name };
+    });
+  },
+);

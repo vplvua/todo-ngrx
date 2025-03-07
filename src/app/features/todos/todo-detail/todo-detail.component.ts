@@ -125,7 +125,15 @@ export class TodoDetailComponent {
     const formValues = this.todoForm.value;
 
     if (this.isNewTodo) {
-      this.store.dispatch(TodoActions.addTodo({ title: formValues.title || '' }));
+      const newTodo: Partial<Todo> = {
+        title: formValues.title,
+        description: formValues.description || '',
+        completed: !!formValues.completed,
+        projectId: formValues.projectId,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      this.store.dispatch(TodoActions.addTodo({ todo: newTodo }));
       this.navigateBack();
     } else if (this.todoId && this.selectedTodo) {
       const updatedTodo: Todo = {
