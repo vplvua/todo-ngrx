@@ -26,7 +26,7 @@ export const selectSelectedTodo = createSelector(
 
 export const selectTodoFilter = createSelector(selectTodoState, (state: TodoState) => state.filter);
 
-export const selectFilteredTodos = createSelector(
+export const selectFilteredByStatusTodos = createSelector(
   selectAllTodos,
   selectTodoFilter,
   (todos, filter) => {
@@ -39,6 +39,28 @@ export const selectFilteredTodos = createSelector(
       default:
         return todos;
     }
+  },
+);
+
+export const selectTodoSearchValue = createSelector(
+  selectTodoState,
+  (state: TodoState) => state.searchValue,
+);
+
+export const selectFilteredTodos = createSelector(
+  selectFilteredByStatusTodos,
+  selectTodoSearchValue,
+  (todos, searchValue) => {
+    if (!searchValue || searchValue.trim() === '') {
+      return todos;
+    }
+
+    const normalizedSearchValue = searchValue.toLowerCase().trim();
+    return todos.filter(
+      (todo) =>
+        todo.title.toLowerCase().includes(normalizedSearchValue) ||
+        (todo.description && todo.description.toLowerCase().includes(normalizedSearchValue)),
+    );
   },
 );
 

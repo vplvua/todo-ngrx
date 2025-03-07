@@ -116,4 +116,14 @@ export const todoReducer = createReducer(
     ...state,
     error: null,
   })),
+
+  // Set Search Value
+  on(TodoActions.setSearchValue, (state, { searchValue }) => ({
+    ...state,
+    searchValue: searchValue,
+  })),
+  on(TodoActions.clearSearchValue, (state) => ({
+    ...state,
+    searchValue: null,
+  })),
 );

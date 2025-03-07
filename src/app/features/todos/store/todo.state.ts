@@ -5,6 +5,7 @@ import { Todo, TodoFilter } from '../todo.model';
 export interface TodoState extends EntityState<Todo> {
   selectedTodoId: string | null;
   filter: TodoFilter;
+  searchValue: string | null;
   error: string | null;
 }
 
@@ -17,5 +18,6 @@ export const todoAdapter: EntityAdapter<Todo> = createEntityAdapter<Todo>({
 export const initialTodoState: TodoState = todoAdapter.getInitialState({
   selectedTodoId: null,
   filter: TodoFilter.ALL,
+  searchValue: null,
   error: null,
 });

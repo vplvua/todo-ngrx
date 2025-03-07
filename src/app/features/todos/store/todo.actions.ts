@@ -61,3 +61,11 @@ export const setTodoFilter = createAction(
 
 // Clear Errors
 export const clearTodoError = createAction('[Todo] Clear Todo Error');
+
+// Set Search Value
+export const setSearchValue = createAction(
+  '[Todo Search] Set Search Value',
+  props<{ searchValue: string }>(),
+);
+
+export const clearSearchValue = createAction('[Todo Search] Clear Search Value');

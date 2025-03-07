@@ -1,0 +1,16 @@
+<div class="search-container">
+  <p-iconField iconPosition="right">
+    @if (searchControl.value) {
+      <p-inputIcon styleClass="pi pi-times cursor-pointer" (click)="clearSearch()" />
+    } @else {
+      <p-inputIcon styleClass="pi pi-search" />
+    }
+    <input
+      type="text"
+      pInputText
+      [formControl]="searchControl"
+      placeholder="Search tasks..."
+      class="p-inputtext-sm"
+    />
+  </p-iconField>
+</div>

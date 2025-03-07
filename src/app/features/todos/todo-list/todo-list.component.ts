@@ -9,6 +9,7 @@ import { Todo, TodoFilter } from '../todo.model';
 import * as TodoActions from '../store/todo.actions';
 import * as TodoSelectors from '../store/todo.selectors';
 import * as ProjectSelectors from '../../projects/store/project.selector';
+import { TodoSearchComponent } from '../todo-search/todo-search.component';
 
 // Prime NG Components
 import { ButtonModule } from 'primeng/button';
@@ -25,6 +26,7 @@ import { PrimeIcons } from 'primeng/api';
   imports: [
     CommonModule,
     TodoFilterComponent,
+    TodoSearchComponent,
     // Prime NG imports
     ButtonModule,
     TableModule,

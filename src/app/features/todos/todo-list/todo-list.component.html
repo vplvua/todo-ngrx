@@ -14,6 +14,10 @@
     </p-button>
   </div>
 
+  <div class="mb-5">
+    <app-todo-search></app-todo-search>
+  </div>
+
   <div class="loading-error">
     <div *ngIf="error$ | async as error" class="error">{{ error }}</div>
   </div>
